@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التشخيص العاطفي | تقنيات الأشعة 2027</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/messages.css">
+</head>
+<body data-dept="radiology">
+
+    <div class="rad-bg"></div>
+
+    <div class="rad-container">
+        
+        <header class="rad-header">
+            <div class="rad-badge">
+                <span class="dot"></span>
+                RADIOLOGY · 2027 · LIVE
+            </div>
+            <h1>التشخيص <span>العاطفي</span></h1>
+            <p>رسائل من الطيف الإشعاعي لخريجي قسم الأشعة</p>
+            <a href="index.html" class="btn-back">→ العودة</a>
+        </header>
+
+        <div class="random-controls">
+            <button id="randomMsgBtn" class="rad-random-btn">
+                <span class="dice">🎲</span>
+                <span>SCAN RANDOM MESSAGE</span>
+            </button>
+        </div>
+
+        <div class="rad-grid" id="holoGrid"></div>
+
+        <div class="rad-pagination">
+            <button id="prevPage" class="rad-page-btn">← PREV</button>
+            <span id="pageInfo">SCAN 01 / 05</span>
+            <button id="nextPage" class="rad-page-btn">NEXT →</button>
+        </div>
+
+    </div>
+
+    <div class="rad-modal" id="messageModal">
+        <div class="rad-modal-content">
+            <button class="rad-modal-close" id="closeModal">✕</button>
+            
+            <div class="dicom-viewer">
+                <div class="dicom-scan-line"></div>
+                
+                <div class="dicom-header">
+                    <div class="dicom-logo">☢</div>
+                    <div class="dicom-title">
+                        <h3>DICOM VIEWER</h3>
+                        <span>RADIOLOGY REPORT</span>
+                    </div>
+                    <div class="dicom-status">
+                        <span class="status-dot"></span> ONLINE
+                    </div>
+                </div>
+                
+                <div class="dicom-body">
+                    <div class="dicom-side">
+                        <div class="dicom-field">
+                            <label>PATIENT</label>
+                            <span>GRADUATE 2027</span>
+                        </div>
+                        <div class="dicom-field">
+                            <label>SOURCE</label>
+                            <span id="modalSender">---</span>
+                        </div>
+                        <div class="dicom-field">
+                            <label>SCAN ID</label>
+                            <span id="modalId">SCAN-000</span>
+                        </div>
+                    </div>
+                    
+                    <div class="dicom-message">
+                        <div class="message-label">◉ TRANSMISSION RECEIVED</div>
+                        <p id="modalText">...</p>
+                    </div>
+                </div>
+                
+                <div class="dicom-footer">
+                    <div class="dicom-barcode"></div>
+                    <div class="dicom-sign">DIAGNOSED ✓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bgmusic.js"></script>
+    <script src="data/messages.js"></script>
+    <script src="js/messages.js"></script>
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENIORS 2027 | قسم تقنيات الأشعة - جامعة الهادي</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body data-dept="radiology">
+
+    <!-- ===== شاشة المفاجأة ===== -->
+    <div class="surprise-screen" id="surpriseScreen">
+        
+        <!-- المرحلة 1: إدخال الاسم -->
+        <div class="sp-stage sp-stage-name active" id="spStageName">
+            <div class="sp-stars-bg"></div>
+            <div class="sp-content">
+<div class="sp-cap">☢️</div>
+<h1 class="sp-title">التخرج</h1>
+<div class="sp-subtitle">RADIOLOGY · CLASS OF 2027</div>
+                
+                <div class="sp-ornament"><span></span><span>✦</span><span></span></div>
+                
+                <p class="sp-intro">
+    <span style="color: #00d9e1; font-family: 'Courier New', monospace; font-size: 0.85em;">⟩</span>
+    أدخل اسمك لبدء التشخيص
+    <span style="color: #00d9e1; font-family: 'Courier New', monospace; font-size: 0.85em;">⟨</span>
+</p>
+                
+                <div class="sp-input-wrapper">
+                    <input type="text" id="spNameInput" class="sp-input" placeholder="اكتب اسمك هنا..." autocomplete="off">
+                    <div class="sp-suggestions" id="spSuggestions"></div>
+                </div>
+                
+                <div class="sp-error" id="spError"></div>
+                
+                <button class="sp-btn-primary" id="spEnterBtn" type="button">
+    <span>📡</span> بدء التشخيص
+</button>
+                
+                <button class="sp-skip" id="spSkipBtn" type="button">
+    تجاوز الفحص ←
+</button>
+            </div>
+        </div>
+        
+<!-- المرحلة 2: صندوق ضوء الأشعة -->
+<div class="sp-stage sp-stage-envelope sp-stage-xray" id="spStageEnvelope">
+    
+    <!-- الجدار المظلم -->
+    <div class="lightbox-wall"></div>
+    
+    <!-- المشهد -->
+    <div class="lightbox-scene">
+        
+        <!-- إطار الصندوق -->
+        <div class="lightbox-frame">
+            
+            <div class="lightbox-frame-inner">
+                
+                <!-- أنبوب الفلورسنت (داخل الإطار أعلى) -->
+                <div class="lightbox-tube" id="lightboxTube">
+                    <div class="tube-holder left"></div>
+                    <div class="tube-holder right"></div>
+                </div>
+                
+                <!-- سطح الضوء -->
+                <div class="lightbox-surface" id="lightboxSurface"></div>
+                
+                <!-- البطاقة (خلف الفيلم) -->
+                <div class="lightbox-card" id="lightboxCard">
+                    <div class="card-header">
+                        <div class="card-logo">🏥</div>
+                        <div class="card-title">تقرير طبي رسمي</div>
+                        <div class="card-subtitle">OFFICIAL MEDICAL REPORT</div>
+                    </div>
+                    <div class="card-divider"></div>
+                    <div class="card-row">
+                        <span class="card-label">المريض:</span>
+                        <span class="card-value" id="cardPatientName">---</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">الرقم:</span>
+                        <span class="card-value" id="cardPatientId">---</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">التشخيص:</span>
+                        <span class="card-value highlight">مبروك التخرج 🎓</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">الحالة:</span>
+                        <span class="card-value success">ممتازة ✓</span>
+                    </div>
+                    <div class="card-divider"></div>
+                    <div class="card-footer">
+                        <div class="card-signature">
+                            <div class="card-signature-name">د. أحمد الطبيب</div>
+                            <div class="card-signature-line"></div>
+                            <div class="card-signature-text">توقيع الطبيب</div>
+                        </div>
+                        <div class="card-seal">⚕️</div>
+                        <div class="card-date">
+                            <div class="card-date-label">التاريخ</div>
+                            <div class="card-date-value">2027/06/15</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الفيلم (فوق البطاقة) -->
+                <div class="lightbox-film" id="lightboxFilm">
+                    
+                    <!-- مشابك الفيلم -->
+                    <div class="film-clip left"></div>
+                    <div class="film-clip right"></div>
+                    
+                    <!-- علامة الفيلم -->
+                    <div class="film-marker">
+                        <div class="film-marker-line"></div>
+                        <div class="film-marker-text">☢ X-RAY</div>
+                        <div class="film-marker-line"></div>
+                    </div>
+                    
+
+<!-- صورة الأشعة (خلف) -->
+<img class="film-xray" id="filmXray" 
+     src="images/xray/chest-xray.png" 
+     alt="X-Ray"
+     onerror="this.style.display='none'">
+
+<!-- صورة صدر حقيقية (أمام) -->
+<img class="film-photo" id="filmPhoto" 
+     src="images/xray/chest-photo.png" 
+     alt="Patient"
+     onerror="this.style.display='none'">
+	
+   
+                    <!-- اسم المريض على الفيلم -->
+                    <div class="film-name" id="filmName"></div>
+					                    <div class="film-scan-reticle" id="filmScanReticle">
+                        <div class="reticle-ring"></div>
+                        <div class="reticle-plus">+</div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <!-- توهج جانبي -->
+        <div class="lightbox-glow" id="lightboxGlow"></div>
+        
+    </div>
+    
+    <!-- معلومات -->
+    <div class="lightbox-info">
+        <div class="lightbox-info-title">صندوق عرض الأشعة</div>
+        <div class="lightbox-info-subtitle">X-RAY VIEWING LIGHT BOX</div>
+    </div>
+    
+    <!-- زر تشغيل الضوء -->
+    <div class="lightbox-actions" id="lightboxLightActions">
+        <button class="lightbox-btn lightbox-btn-light" id="spOpenEnvelopeBtn" type="button">
+            <span>💡</span>
+            <span>تشغيل الضوء</span>
+        </button>
+    </div>
+    
+    <!-- زر نزع الفيلم (يظهر لاحقاً) -->
+    <div class="lightbox-actions lightbox-remove-actions" id="lightboxRemoveActions">
+        <button class="lightbox-btn lightbox-btn-remove" id="lightboxRemoveBtn" type="button">
+            <span>✋</span>
+            <span>انزع الفيلم</span>
+        </button>
+    </div>
+    
+</div>
+        
+<!-- المرحلة 3: بطاقة الرسالة (تقنيات الأشعة) -->
+<div class="sp-stage sp-stage-message" id="spStageMessage">
+    <div class="sp-stars-bg"></div>
+    
+    <div class="sp-message-card rad-msg-card" id="spMessageCard">
+        
+        <!-- شريط علوي (معلومات الملف) -->
+        <div class="rad-msg-topbar">
+            <span class="rad-msg-badge">
+                <span class="rad-msg-dot"></span>
+                VERIFIED
+            </span>
+            <span class="rad-msg-code">PATIENT FILE · RAD/2027</span>
+        </div>
+        
+        <!-- زخارف الزوايا -->
+        <div class="sp-msg-corner tl">✦</div>
+        <div class="sp-msg-corner tr">✦</div>
+        <div class="sp-msg-corner bl">✦</div>
+        <div class="sp-msg-corner br">✦</div>
+        
+        <!-- الأيقونة -->
+        <div class="rad-msg-icon">☢️</div>
+        
+        <!-- الجامعة والقسم -->
+        <div class="rad-msg-univ">جامعة الهادي</div>
+        <div class="rad-msg-dept">قسم تقنيات الأشعة</div>
+        <div class="rad-msg-dept-en">RADIOLOGY TECHNOLOGY DEPARTMENT</div>
+        
+        <!-- الفاصل -->
+        <div class="rad-msg-divider">
+            <span></span>
+            <span class="rad-msg-divider-icon">✦</span>
+            <span></span>
+        </div>
+        
+        <!-- المستلم -->
+        <div class="rad-msg-to">إلى الخريج / الخريجة</div>
+        <div class="sp-msg-name rad-msg-name" id="spMsgName">...</div>
+        
+        <!-- الرسالة -->
+        <div class="rad-msg-text">
+            في هذا اليوم المبارك، نقف أمامك بكل فخر واعتزاز.<br>
+            أنت اليوم لست فقط خريجاً... بل <strong>عيوناً ترى ما لا يُرى</strong>،<br>
+            و<strong>سفيراً للدقة</strong> في غرف التشخيص،<br>
+            و<strong>عقلاً</strong> سيحمي الأرواح بالمعرفة التقنية.<br><br>
+            كل ليالي السهر، كل صورة حللتها،<br>
+            كل جهاز شغّلته... أوصلتك إلى هنا.<br><br>
+            <em>"خلف كل صورة أشعة، قصة إنسان يستحق الحياة"</em>
+        </div>
+        
+        <!-- الفاصل -->
+        <div class="rad-msg-divider">
+            <span></span>
+            <span class="rad-msg-divider-icon">✦</span>
+            <span></span>
+        </div>
+        
+        <!-- التوقيع -->
+        <div class="rad-msg-sign">
+            <div class="rad-msg-sign-line"></div>
+            <div class="rad-msg-sign-text">هدية من — تقني الأشعة مرتضى البيضاني</div>
+        </div>
+        
+        <!-- ختم صغير -->
+        <div class="rad-msg-seal">☢</div>
+        
+    </div>
+    
+    <button class="sp-btn-primary" id="spMessageContinueBtn" type="button">
+        <span>✨</span> شاهد رحلتك
+    </button>
+</div>
+        
+        <!-- المرحلة 4: رحلة الصور -->
+        <div class="sp-stage sp-stage-journey" id="spStageJourney">
+            <div class="sp-journey-bg"></div>
+            
+            <div class="sp-journey-photo sp-journey-child" id="spJourneyChild">
+                <img id="spChildImg" src="" alt="">
+                <div class="sp-journey-vignette"></div>
+                <div class="sp-journey-caption sp-journey-caption-child">
+                    <div class="sp-journey-year">2005</div>
+                    <div class="sp-journey-text">كان حلماً...</div>
+                </div>
+            </div>
+            
+            <div class="sp-journey-photo sp-journey-adult" id="spJourneyAdult">
+                <img id="spAdultImg" src="" alt="">
+                <div class="sp-journey-vignette"></div>
+                <div class="sp-journey-caption sp-journey-caption-adult">
+                    <div class="sp-journey-year">2027</div>
+                    <div class="sp-journey-text">...أصبح حقيقة</div>
+                </div>
+            </div>
+            
+            <div class="sp-journey-final" id="spJourneyFinal">
+    <div class="sp-final-cap rad-final-icon">☢️</div>
+    <div class="sp-final-title">مبروك التخرج</div>
+    <div class="sp-final-name" id="spFinalName">...</div>
+    <div class="sp-final-sub rad-final-sub">
+        <span class="rad-final-line"></span>
+        <span>نحن فخورون بك 💛</span>
+        <span class="rad-final-line"></span>
+    </div>
+</div>
+</div>  
+
+        
+<!-- المرحلة 5: الشهادة (تقنيات الأشعة) -->
+<div class="sp-stage sp-stage-cert" id="spStageCert">
+    <div class="sp-stars-bg"></div>
+    
+    <!-- شريط علوي -->
+    <div class="rad-cert-topbar">
+        <span>● VERIFIED</span>
+        <span>☢ RADIOLOGY</span>
+        <span>2027</span>
+    </div>
+    
+    <div class="sp-cert-wrapper">
+        <div class="sp-cert rad-cert" id="spCert">
+            
+            <div class="sp-cert-corner tl">✦</div>
+            <div class="sp-cert-corner tr">✦</div>
+            <div class="sp-cert-corner bl">✦</div>
+            <div class="sp-cert-corner br">✦</div>
+            
+            <div class="sp-cert-inner">
+                
+                <!-- أيقونة الأشعة -->
+                <div class="sp-cert-icon rad-cert-icon">☢️</div>
+                
+                <h2 class="sp-cert-title rad-cert-title">شهادة تخرج</h2>
+                <div class="sp-cert-sub rad-cert-sub">CERTIFICATE · 2027</div>
+                
+                <div class="sp-cert-ornament">
+                    <span></span>
+                    <span class="rad-cert-ornament-star">☢</span>
+                    <span></span>
+                </div>
+                
+                <div class="sp-cert-to">تشهد جامعة الهادي بأن</div>
+                <div class="sp-cert-name" id="spCertName">...</div>
+                <div class="sp-cert-text">
+                    قد أكمل بنجاح متطلبات<br>
+                    درجة البكالوريوس في <strong>تقنيات الأشعة</strong>
+                </div>
+                
+                <div class="sp-cert-photo rad-cert-photo">
+                    <img id="spCertPhoto" src="" alt="">
+                </div>
+                
+                <div class="sp-cert-meta">
+                    <div class="sp-cert-serial rad-cert-serial" id="spCertSerial">RAD-2027-001</div>
+                    <div class="sp-cert-date rad-cert-date">2027</div>
+                </div>
+                
+                <div class="sp-cert-seal rad-cert-seal">☢</div>
+                
+                <div class="rad-cert-bottom">
+                    <span>◆</span>
+                    <span>RADIOLOGY TECHNOLOGY DEPARTMENT</span>
+                    <span>◆</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="sp-cert-actions">
+        <button class="sp-btn-primary" id="spNextToStarsBtn" type="button">
+            <span>✨</span> شاهد سماء الدفعة
+        </button>
+    </div>
+</div>
+        
+        <!-- المرحلة 6: سماء الدفعة (النجوم) -->
+        <div class="sp-stage sp-stage-stars" id="spStageStars">
+            <div class="sp-night-sky"></div>
+            
+            <div class="sp-stars-header">
+                <div class="sp-stars-title">✨ سماء دفعة 2027 ✨</div>
+                <div class="sp-stars-hint" id="spStarsHint">
+                    ابحث عن <strong>نجمتك الذهبية</strong> في السماء
+                </div>
+            </div>
+            
+            <div class="sp-stars-sky" id="spStarsSky"></div>
+            
+            <button class="sp-stars-skip" id="spStarsSkipBtn" type="button">
+                <span>🏠</span>
+                <span>ادخل الموقع مباشرة</span>
+            </button>
+            
+            <div class="sp-star-zoom" id="spStarZoom">
+                <div class="sp-star-zoom-inner">
+                    <div class="sp-star-zoom-glow"></div>
+                    <div class="sp-star-zoom-photo" id="spStarZoomPhoto">
+                        <img id="spStarZoomImg" src="" alt="">
+                    </div>
+                    <div class="sp-star-zoom-text">✨ أنت هذه النجمة ✨</div>
+                    <div class="sp-star-zoom-name" id="spStarZoomName">...</div>
+                    <div class="sp-star-zoom-sub">نجمة ساطعة في سماء دفعة 2027</div>
+                    <button class="sp-btn-primary" id="spStarsEnterBtn" type="button">
+                        <span>🏠</span> ادخل الموقع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⬇️ الموقع الرئيسي ⬇️ -->
+    <div class="bg-layer"></div>
+
+ <!-- الترويسة (تقنيات الأشعة) -->
+<header class="poster-header rad-header">
+    
+    <!-- شريط العلامات الحيوية -->
+    <div class="rad-vitals-bar">
+        <div class="rad-vital">
+            <span class="rad-vital-icon">❤️</span>
+            <div class="rad-vital-content">
+                <span class="rad-vital-value" id="radHeartRate">72</span>
+                <span class="rad-vital-label">BPM</span>
+            </div>
+        </div>
+        <div class="rad-vital-divider"></div>
+        <div class="rad-vital">
+            <span class="rad-vital-icon">🫁</span>
+            <div class="rad-vital-content">
+                <span class="rad-vital-value">98</span>
+                <span class="rad-vital-label">SpO₂%</span>
+            </div>
+        </div>
+        <div class="rad-vital-divider"></div>
+        <div class="rad-vital">
+            <span class="rad-vital-icon">🩺</span>
+            <div class="rad-vital-content">
+                <span class="rad-vital-value">120/80</span>
+                <span class="rad-vital-label">BP mmHg</span>
+            </div>
+        </div>
+        <div class="rad-vital-divider"></div>
+        <div class="rad-vital">
+            <span class="rad-vital-icon">☢️</span>
+            <div class="rad-vital-content">
+                <span class="rad-vital-value">SAFE</span>
+                <span class="rad-vital-label">RAD</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- خط ECG متحرك -->
+    <div class="rad-ecg-wrap">
+        <svg class="rad-ecg-svg" viewBox="0 0 400 30" preserveAspectRatio="none">
+            <path d="M 0 15 L 60 15 L 70 5 L 80 25 L 90 15 L 150 15 L 160 10 L 170 20 L 180 15 L 240 15 L 250 3 L 260 27 L 270 15 L 330 15 L 340 10 L 350 20 L 360 15 L 400 15" 
+                  fill="none" stroke="#00ff88" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+    </div>
+    
+    <!-- شعار الأشعة -->
+    <div class="rad-crest">
+        <div class="rad-crest-ring-outer"></div>
+        <div class="rad-crest-ring-inner"></div>
+        <div class="rad-crest-icon">☢</div>
+        <div class="rad-crest-label">RADIOLOGY</div>
+    </div>
+    
+    <!-- العنوان الرئيسي -->
+    <h1 class="rad-main-title">
+        <span class="rad-title-word">SENIORS</span>
+        <span class="rad-title-sep">·</span>
+        <span class="rad-title-year">2027</span>
+    </h1>
+    
+    <!-- اسم القسم -->
+    <div class="rad-dept-wrap">
+        <span class="rad-dept-line"></span>
+        <h2 class="rad-department">قسم تقنيات الأشعة</h2>
+        <span class="rad-dept-line"></span>
+    </div>
+    <h3 class="rad-department-en">RADIOLOGY TECHNOLOGY DEPARTMENT</h3>
+    
+    <!-- شارة الجامعة -->
+    <div class="rad-university">
+        <span class="rad-univ-icon">🏥</span>
+        <span class="rad-univ-name">جامعة الهادي</span>
+        <span class="rad-univ-sep">|</span>
+        <span class="rad-univ-faculty">كلية العلوم الطبية</span>
+    </div>
+    
+    <!-- رسالة التهنئة -->
+    <div class="congrats-message" id="congratsMessage">
+        <div class="congrats-decoration">❝</div>
+        <p class="congrats-line">
+            إلى من قضوا لياليهم بين <span class="highlight">أجهزة الأشعة</span> و<span class="highlight">صور التشخيص</span>، وقلوبهم تنبض بالحياة... إلى من جمعوا بين <span class="highlight">دقة التقنية</span> و<span class="highlight">رحمة الطب</span>،
+        </p>
+        <p class="congrats-highlight">
+            إلى خريجي تقنيات الأشعة — دفعة 2027<br>
+            في <strong>جامعة الهادي</strong>
+        </p>
+        <div class="congrats-ornament">
+            <span></span><span>✦</span><span></span>
+        </div>
+        <p class="congrats-line">
+            هنيئاً لكم هذا الإنجاز العظيم، فأنتم اليوم <span class="highlight">عيون الطب</span> في غرف التشخيص، و<span class="highlight">حرّاس الدقة</span> في مختبرات التصوير، و<span class="highlight">عقول المستقبل</span> التي ستحمي الأرواح بالمعرفة.
+        </p>
+        <div class="congrats-ornament">
+            <span></span><span>✦</span><span></span>
+        </div>
+        <p class="congrats-final">
+            بارك الله فيكم، وجعل خطواتكم القادمة نوراً يضيء دروب المرضى، وعزماً يرفع اسم جامعتكم عالياً.
+        </p>
+        <div class="congrats-decoration bottom">❞</div>
+    </div>
+    
+    <button class="congrats-toggle" id="congratsToggle">
+        اقرأ الرسالة كاملة ⌄
+    </button>
+</header>
+
+    <!-- ===== شريط التنقل السريع ===== -->
+    <nav class="quick-nav" id="quickNav">
+        <a href="#videoHero" class="quick-nav-btn">
+            <span>🎬</span>
+            <span>الفيديو</span>
+        </a>
+        <a href="book.html" class="quick-nav-btn">
+            <span>📖</span>
+            <span>الذكريات</span>
+        </a>
+        <a href="game.html" class="quick-nav-btn">
+            <span>🎮</span>
+            <span>خمّن مَن</span>
+        </a>
+        <button class="quick-nav-btn" id="showAllPhotosBtn" type="button">
+            <span>🖼️</span>
+            <span>الصور</span>
+        </button>
+    </nav>
+
+    <!-- ===== قسم الفيديو ===== -->
+    <section class="video-hero" id="videoHero">
+        <div class="vh-photos-row vh-top" id="vhTopRow"></div>
+        <div class="vh-middle">
+            <div class="vh-photos-col vh-left" id="vhLeftCol"></div>
+            
+            <div class="video-section">
+                <div class="video-title">✦ فيلم التخرج ✦</div>
+                
+                <div class="video-tabs">
+                    <button class="video-tab active" data-tab="official" id="tabOfficial">
+                        🎬 الفيلم الرسمي
+                    </button>
+                    <button class="video-tab" id="openSlideshowBtn">
+                        ✨ فيلم الدفعة
+                    </button>
+                </div>
+                
+                <div class="video-tab-content active" id="tabContentOfficial">
+                    <div class="video-frame">
+                        <video id="mainVideo" controls preload="metadata" playsinline>
+                            <source src="video/1.mp4" type="video/mp4">
+							<source src="video/2.mp4" type="video/mp4">
+							<source src="video/3.mp4" type="video/mp4">
+							<source src="video/4.mp4" type="video/mp4">
+                            متصفحك لا يدعم تشغيل الفيديو.
+                        </video>
+                    </div>
+                    <div class="video-playlist" id="videoPlaylist"></div>
+                </div>
+            </div>
+            
+            <div class="vh-photos-col vh-right" id="vhRightCol"></div>
+        </div>
+    </section>
+
+        <!-- زر التشخيص العاطفي (قسم الأشعة) -->
+        <div style="width: 100%; display: flex; justify-content: center; margin: 40px 0; position: relative; z-index: 5;">
+            <a href="messages.html" class="certificate-btn" style="background: linear-gradient(135deg, #0a0a1a, #00d9e1); border: 2px solid #00d9e1; padding: 15px 30px; box-shadow: 0 0 20px rgba(0, 217, 225, 0.5);">
+                <span class="icon" style="font-size: 1.5rem;">☢️</span>
+                <span style="font-size: 1.1rem; font-weight: 900; color: #ffffff; letter-spacing: 1px;">التشخيص العاطفي</span>
+            </a>
+			    <a href="xray-wall.html" class="certificate-btn" style="background:linear-gradient(135deg,#030507,#00d9e1); border:2px solid #00d9e1; padding:15px 30px; box-shadow:0 0 20px rgba(0,217,225,0.5);">
+        <span class="icon" style="font-size:1.5rem;">🩻</span>
+        <span style="font-size:1.1rem; font-weight:900; color:#fff; letter-spacing:1px;">جدار الأشعة</span>
+    </a>
+        </div>
+
+    <button class="scroll-top" id="scrollTopBtn">↑</button>
+
+    <div class="floating-buttons">
+        <a href="book.html" class="certificate-btn book-btn" id="bookBtn">
+            <span class="icon">📖</span>
+            <span>كتاب الذكريات</span>
+        </a>
+        <a href="game.html" class="certificate-btn game-btn" id="gameBtn">
+            <span class="icon">🎮</span>
+            <span>خمّن مَن؟</span>
+        </a>
+    </div>
+
+    <div class="footer-note">
+        <span>صُنع بـ <span class="heart">❤</span> لدفعة تقنيات الأشعة 2027 - التقني مرتضى البيضاني</span>
+        <span class="footer-contact">
+            للتواصل اضغط على
+            <div class="social-icons">
+                <!--<a href="https://instagram.com/rt_mortuza" target="_blank" rel="noopener" class="social-icon instagram" title="انستغرام">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a> -->
+                <a href="https://t.me/m_alb2" target="_blank" rel="noopener" class="social-icon telegram" title="تيليجرام">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                </a>
+            </div>
+        </span>
+    </div>
+
+    <!-- ===== نافذة الطالب ===== -->
+    <div class="modal" id="studentModal">
+        <div class="modal-card" id="modalCard">
+            <div class="student-counter" id="studentCounter">1 / 1</div>
+            <button class="nav-btn prev" id="prevBtn">‹</button>
+            <button class="nav-btn next" id="nextBtn">›</button>
+            <button class="close-btn" id="closeModal">✕</button>
+            
+            <div class="modal-card-inner">
+                <div class="modal-front">
+                    <img id="modalChildImg" src="" alt="طفل">
+                    <div class="name-tag" id="modalChildName">الاسم</div>
+                </div>
+                <div class="modal-back">
+                    <img id="modalAdultImg" src="" alt="متخرج">
+                    <div class="info-tag">
+                        <span class="name" id="modalAdultName">الاسم</span>
+                        <span class="job-title" id="modalAdultJob">المهنة</span>
+                        <div class="modal-awards" id="modalAdultAwards"></div>
+                        <div class="message" id="modalAdultMessage">العبارة الشخصية</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-hint">👆 اضغط على البطاقة لقلبها</div>
+        </div>
+    </div>
+
+<button class="bg-music-toggle" id="bgMusicToggle" type="button" title="تشغيل/إيقاف الموسيقى">
+    <span id="bgMusicIcon">🔊</span>
+</button>
+
+    <!-- ===== عرض فيلم الدفعة ===== -->
+    <div class="fs-slideshow" id="fsSlideshow">
+        <div class="fs-progress-wrap">
+            <div class="fs-progress-bar">
+                <div class="fs-progress-fill" id="fsProgressFill"></div>
+            </div>
+            <div class="fs-counter" id="fsCounter">1 / 126</div>
+        </div>
+        
+        <div class="fs-top-controls">
+            <button class="fs-icon-btn fs-close-btn" id="fsCloseBtn" title="إغلاق">✕</button>
+            <div class="fs-music-badge" id="fsMusicBadge">
+                <span class="fs-music-eq">
+                    <span></span><span></span><span></span>
+                </span>
+                <span class="fs-music-name" id="fsMusicName">الموسيقى 1</span>
+            </div>
+            <button class="fs-icon-btn" id="fsMuteBtn" title="كتم الصوت">🔊</button>
+        </div>
+        
+        <div class="fs-photo-layer">
+            <div class="fs-photo-bg" id="fsPhotoBg"></div>
+            <img class="fs-photo" id="fsPhoto" src="" alt="">
+            <img class="fs-photo-secondary" id="fsPhotoSecondary" src="" alt="">
+            <div class="fs-vignette"></div>
+        </div>
+        
+        <div class="fs-tap-zone fs-tap-right" id="fsTapRight"></div>
+        <div class="fs-tap-zone fs-tap-left" id="fsTapLeft"></div>
+        
+        <div class="fs-info" id="fsInfo">
+            <div class="fs-info-inner">
+                <div class="fs-name" id="fsName"></div>
+                <div class="fs-job" id="fsJob"></div>
+                <div class="fs-awards" id="fsAwards"></div>
+                <div class="fs-message" id="fsMessage"></div>
+            </div>
+        </div>
+        
+        <div class="fs-controls">
+            <button class="fs-ctrl-btn" id="fsPrevBtn" title="السابق">⏮</button>
+            <button class="fs-ctrl-btn fs-play-btn" id="fsPlayPauseBtn" title="إيقاف/تشغيل">⏸</button>
+            <button class="fs-ctrl-btn" id="fsNextBtn" title="التالي">⏭</button>
+            <button class="fs-ctrl-btn" id="fsMusicListBtn" title="اختيار الموسيقى">🎵</button>
+            <button class="fs-ctrl-btn" id="fsModeBtn" title="تغيير النمط">📖</button>
+            <button class="fs-ctrl-btn" id="fsFullscreenBtn" title="ملء الشاشة">⛶</button>
+        </div>
+        
+        <div class="fs-music-panel" id="fsMusicPanel">
+            <div class="fs-music-panel-header">
+                <span class="fs-music-panel-title">🎵 اختر الموسيقى</span>
+                <button class="fs-music-panel-close" id="fsMusicPanelClose">✕</button>
+            </div>
+            <div class="fs-music-list" id="fsMusicList"></div>
+        </div>
+    </div>
+
+    <!-- ===== نافذة جميع الصور ===== -->
+    <div class="all-photos-modal" id="allPhotosModal">
+        <div class="all-photos-header">
+            <h2>🖼️ جميع صور الخريجين</h2>
+            <span class="all-photos-count" id="allPhotosCount">0</span>
+            <button class="all-photos-close" id="allPhotosClose" type="button">✕</button>
+        </div>
+        
+        <div class="controls">
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن اسم الطالب...">
+            </div>
+        </div>
+        
+        <div class="all-photos-grid" id="allPhotosGrid"></div>
+    </div>
+
+    <!-- ===== نافذة الشهادة ===== -->
+    <div class="cert-modal" id="certModal">
+        <div class="cert-modal-content">
+            <button class="cert-modal-close" id="certModalClose" type="button">✕</button>
+            
+            <div class="sp-cert rad-cert" id="certModalCert">
+                <div class="sp-cert-corner tl">✦</div>
+                <div class="sp-cert-corner tr">✦</div>
+                <div class="sp-cert-corner bl">✦</div>
+                <div class="sp-cert-corner br">✦</div>
+                
+                <div class="sp-cert-inner">
+                    <div class="sp-cert-icon rad-cert-icon">☢️</div>
+                    <h2 class="sp-cert-title rad-cert-title">شهادة تخرج</h2>
+                    <div class="sp-cert-sub rad-cert-sub">CERTIFICATE · 2027</div>
+                    <div class="sp-cert-ornament"><span></span><span class="rad-cert-ornament-star">☢</span><span></span></div>
+                    <div class="sp-cert-to">تشهد جامعة الهادي بأن</div>
+                    <div class="sp-cert-name" id="spCertNameModal">...</div>
+                    <div class="sp-cert-text">قد أكمل بنجاح متطلبات<br>درجة البكالوريوس في <strong>تقنيات الأشعة</strong></div>
+                    <div class="sp-cert-photo rad-cert-photo">
+                        <img id="spCertPhotoModal" src="" alt="">
+                    </div>
+                    <div class="sp-cert-meta">
+                        <div class="sp-cert-serial rad-cert-serial" id="spCertSerialModal">RAD-2027-001</div>
+                        <div class="sp-cert-date rad-cert-date">2027</div>
+                    </div>
+                    <div class="sp-cert-seal rad-cert-seal">☢</div>
+                    <div class="rad-cert-bottom">
+                        <span>◆</span>
+                        <span>RADIOLOGY TECHNOLOGY DEPARTMENT</span>
+                        <span>◆</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cert-modal-actions"></div>
+        </div>
+    </div>
+    
+    <!-- ===== السكربتات ===== -->
+    <script src="js/bgmusic.js"></script>
+    <script src="js/welcome.js"></script>
+    <script src="data/students.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/slideshow.js"></script>
+</body>
+</html>

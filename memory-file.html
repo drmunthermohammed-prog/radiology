@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>الملف الطبي للذكريات | تقنيات الأشعة 2027</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/memory-file.css">
+</head>
+<body class="mf-body" data-dept="radiology">
+
+    <!-- خلفية المكتب -->
+    <div class="mf-scene">
+        <div class="mf-lamp"></div>
+        <div class="mf-dust"></div>
+    </div>
+
+    <!-- المجلد -->
+    <div class="mf-folder" id="mfFolder">
+
+        <!-- الغلاف -->
+        <div class="mf-cover" id="mfCover">
+            <div class="mf-cover-dept">RADIOLOGY · 2027</div>
+            <div class="mf-cover-title">CLASSIFIED</div>
+            <div class="mf-stamp">TOP SECRET</div>
+            <div class="mf-seal">☢</div>
+            <div class="mf-cover-hint">اضغط للفتح</div>
+        </div>
+
+        <!-- البطاقة الطبية المضغوطة -->
+        <div class="mf-card" id="mfCard">
+
+            <!-- رأس -->
+            <div class="mf-card-head">
+                <span class="mf-card-logo">☢</span>
+                <span class="mf-card-head-text">UNIVERSITY HOSPITAL · RADIOLOGY</span>
+            </div>
+
+            <!-- اسم المريض -->
+            <div class="mf-patient">
+                <div class="mf-patient-name" id="mfName">---</div>
+                <div class="mf-patient-id" id="mfId">RAD-2027-XXX</div>
+            </div>
+
+            <!-- النتائج -->
+            <div class="mf-block">
+                <div class="mf-block-title">
+                    <span class="mf-num">01</span>
+                    <span>FINDINGS · النتائج</span>
+                </div>
+                <div class="mf-findings" id="mfFindings"></div>
+            </div>
+
+            <!-- الوصفة -->
+            <div class="mf-block">
+                <div class="mf-block-title">
+                    <span class="mf-num">02</span>
+                    <span>℞ PRESCRIPTION · الوصفة</span>
+                </div>
+                <div class="mf-rx" id="mfRx"></div>
+            </div>
+
+            <!-- التشخيص -->
+            <div class="mf-diagnosis" id="mfDiagnosis">
+                ✅ خريج ناجح — لا يوجد علاج
+            </div>
+
+            <!-- تذييل -->
+            <div class="mf-card-foot">
+                <div class="mf-doctor" id="mfDoctor">د. الحنين</div>
+                <div class="mf-seal-small">☢</div>
+                <div class="mf-date">2027/06/15</div>
+            </div>
+
+        </div>
+
+        <!-- أزرار -->
+        <div class="mf-actions" id="mfActions">
+            <button class="mf-btn mf-btn-dl" id="mfDownload">📥 حفظ</button>
+            <button class="mf-btn mf-btn-sh" id="mfShare">📤 مشاركة</button>
+            <button class="mf-btn mf-btn-cl" id="mfClose">✕</button>
+        </div>
+
+    </div>
+
+    <script src="data/students.js"></script>
+    <script src="js/memory-file.js"></script>
+</body>
+</html>

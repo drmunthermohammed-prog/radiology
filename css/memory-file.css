@@ -1,0 +1,1028 @@
+/* =========================================================
+   Memory File - Premium Medical Folder
+   ========================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --leather-1: #1a1410;
+    --leather-2: #2a1f18;
+    --leather-3: #0f0a07;
+
+    --paper-1: #faf5e6;
+    --paper-2: #f5eed6;
+    --paper-3: #ede3c7;
+
+    --ink-blue: #1e3a8a;
+    --ink-dark: #0f172a;
+    --ink-red: #991b1b;
+    --ink-gray: #475569;
+
+    --gold: #d4af37;
+    --gold-light: #fbbf24;
+
+    --cyan: #00d9e1;
+    --cyan-glow: rgba(0, 217, 225, 0.6);
+
+    --font-serif: 'Aref Ruqaa', 'Amiri', serif;
+    --font-body: 'Amiri', serif;
+    --font-mono: 'Courier New', monospace;
+    --font-cairo: 'Cairo', sans-serif;
+}
+
+.mf-body {
+    min-height: 100vh;
+    background: #0a0805;
+    overflow-x: hidden;
+    font-family: var(--font-cairo);
+    color: var(--ink-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* ===== المشهد ===== */
+.mf-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+
+.mf-desk {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, #2a1f18 0%, #0f0a07 70%);
+}
+
+.mf-desk::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        repeating-linear-gradient(90deg, rgba(139, 90, 43, 0.08) 0px, rgba(139, 90, 43, 0.08) 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(0deg, rgba(139, 90, 43, 0.04) 0px, rgba(139, 90, 43, 0.04) 1px, transparent 1px, transparent 60px);
+    opacity: 0.5;
+}
+
+.mf-desk::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(0,0,0,0.7) 100%);
+}
+
+.mf-lamp {
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255, 220, 150, 0.15) 0%, transparent 60%);
+    animation: lampFlicker 5s ease-in-out infinite;
+}
+
+@keyframes lampFlicker { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+
+.mf-dust { position: absolute; inset: 0; pointer-events: none; }
+
+.mf-dust::before {
+    content: ""; position: absolute; top: 20%; left: 10%;
+    width: 2px; height: 2px; background: rgba(255,220,150,0.6); border-radius: 50%;
+    box-shadow:
+        100px 200px 0 rgba(255,220,150,0.4),
+        300px 400px 0 rgba(255,220,150,0.3),
+        500px 150px 0 rgba(255,220,150,0.5),
+        700px 300px 0 rgba(255,220,150,0.2),
+        900px 500px 0 rgba(255,220,150,0.4);
+    animation: dustFloat 20s linear infinite;
+}
+
+@keyframes dustFloat {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; } 90% { opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
+}
+
+/* ===== المجلد ===== */
+
+.mf-folder {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    z-index: 2;
+    perspective: 2000px;
+}
+
+.mf-folder-back {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--leather-2) 0%, var(--leather-1) 50%, var(--leather-3) 100%);
+    border-radius: 6px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(212,175,55,0.2), inset 0 0 80px rgba(0,0,0,0.6);
+}
+
+.mf-folder-cover {
+    position: absolute; inset: 0; border-radius: 6px; overflow: hidden;
+    cursor: pointer; z-index: 10;
+    transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1), opacity 1s ease 0.5s;
+    transform-origin: right center;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(212,175,55,0.3);
+}
+
+.mf-folder.open .mf-folder-cover {
+    transform: rotateY(-180deg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mf-cover-leather {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #2a1f18 0%, #1a1410 30%, #0f0a07 70%, #1a1410 100%);
+}
+
+.mf-cover-leather::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        repeating-linear-gradient(45deg, transparent 0px, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 3px),
+        repeating-linear-gradient(-45deg, transparent 0px, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 3px);
+}
+
+.mf-cover-leather::after {
+    content: ""; position: absolute; inset: 20px;
+    border: 1px solid rgba(212,175,55,0.4); border-radius: 3px;
+    box-shadow: inset 0 0 40px rgba(212,175,55,0.1);
+}
+
+.mf-cover-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px; z-index: 2;
+}
+
+.mf-cover-dept {
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--gold);
+    letter-spacing: 6px; margin-bottom: 40px;
+    text-shadow: 0 0 20px rgba(212,175,55,0.5);
+}
+
+.mf-cover-title {
+    font-family: var(--font-serif); font-size: 3.5rem; color: var(--gold-light);
+    font-weight: 900; letter-spacing: 8px; margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(251,191,36,0.6), 0 4px 8px rgba(0,0,0,0.8);
+    animation: goldShimmer 4s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+    0%, 100% { text-shadow: 0 0 30px rgba(251,191,36,0.6), 0 4px 8px rgba(0,0,0,0.8); }
+    50% { text-shadow: 0 0 50px rgba(251,191,36,1), 0 4px 8px rgba(0,0,0,0.8); }
+}
+
+.mf-cover-sub {
+    font-family: var(--font-mono); font-size: 0.8rem;
+    color: rgba(212,175,55,0.8); letter-spacing: 4px;
+    padding: 8px 20px;
+    border-top: 1px solid rgba(212,175,55,0.4);
+    border-bottom: 1px solid rgba(212,175,55,0.4);
+}
+
+.mf-stamp-top-secret {
+    position: absolute; top: 40px; left: 40px;
+    padding: 8px 20px; color: var(--ink-red);
+    border: 3px solid var(--ink-red);
+    font-family: var(--font-mono); font-size: 0.9rem; font-weight: 900;
+    letter-spacing: 3px; transform: rotate(-15deg); opacity: 0.85;
+    border-radius: 3px;
+    box-shadow: inset 0 0 20px rgba(153,27,27,0.2), 0 0 30px rgba(153,27,27,0.3);
+    z-index: 3;
+}
+
+.mf-stamp-top-secret::after {
+    content: ""; position: absolute; inset: 4px;
+    border: 1px dashed rgba(153,27,27,0.6); border-radius: 2px;
+}
+
+.mf-cover-seal {
+    position: absolute; bottom: 60px; right: 40px;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #dc2626 0%, #991b1b 40%, #7f1d1d 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: #fbbf24;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(153,27,27,0.4);
+    text-shadow: 0 0 15px rgba(251,191,36,0.8);
+    z-index: 3; transform: rotate(-8deg);
+}
+
+.mf-cover-seal::before {
+    content: ""; position: absolute; inset: 8px;
+    border: 2px dashed rgba(251,191,36,0.4); border-radius: 50%;
+}
+
+.mf-cover-hint {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    color: rgba(251,191,36,0.8); font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 1px; animation: hintPulse 2s ease-in-out infinite;
+    white-space: nowrap; z-index: 3;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+}
+
+/* ===== الورق ===== */
+.mf-paper {
+    position: relative;
+    background: linear-gradient(180deg, var(--paper-1) 0%, var(--paper-2) 50%, var(--paper-3) 100%);
+    border-radius: 4px; padding: 40px 45px;
+    box-shadow: inset 0 0 60px rgba(212,175,55,0.08), 0 10px 30px rgba(0,0,0,0.4);
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 5; margin: 20px; overflow: hidden;
+}
+
+.mf-folder.open .mf-paper {
+    opacity: 1; transform: translateY(0); transition-delay: 0.6s;
+}
+
+.mf-paper::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(139,90,43,0.05) 0%, transparent 20%),
+        radial-gradient(circle at 85% 80%, rgba(139,90,43,0.04) 0%, transparent 25%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100' height='100' filter='url(%23n)' opacity='0.03'/></svg>");
+    pointer-events: none; opacity: 0.5;
+}
+
+.mf-paper::after {
+    content: ""; position: absolute; top: 35%; right: 8%;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,90,43,0.12) 0%, rgba(139,90,43,0.08) 40%, transparent 70%);
+    border: 2px solid rgba(139,90,43,0.06);
+    pointer-events: none; transform: rotate(15deg);
+}
+
+/* رأس */
+.mf-page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 20px; border-bottom: 2px solid var(--ink-dark);
+    position: relative; z-index: 1;
+}
+
+.mf-hospital { display: flex; align-items: center; gap: 15px; }
+
+.mf-hospital-logo {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--cyan) 0%, #0891b2 60%, #0e7490 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; color: #fff;
+    box-shadow: 0 4px 10px rgba(8,145,178,0.4), inset 0 0 15px rgba(255,255,255,0.3);
+}
+
+.mf-hospital-name { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 700; color: var(--ink-dark); line-height: 1.2; }
+.mf-hospital-dept { font-family: var(--font-mono); font-size: 0.65rem; color: var(--ink-gray); letter-spacing: 2px; margin-top: 3px; }
+
+.mf-report-badge {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+    color: var(--cyan); background: rgba(0,217,225,0.1);
+    border: 1.5px solid var(--cyan); padding: 6px 14px; border-radius: 4px;
+    box-shadow: 0 0 15px rgba(0,217,225,0.3);
+}
+
+.mf-page-divider {
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--ink-dark) 0px, var(--ink-dark) 3px, transparent 3px, transparent 8px);
+    margin: 20px 0; opacity: 0.4;
+}
+
+/* بيانات المريض */
+.mf-patient-info {
+    background: rgba(15,23,42,0.02);
+    border: 1px dashed rgba(15,23,42,0.3);
+    border-radius: 6px; padding: 20px 25px; margin-bottom: 30px;
+    position: relative; z-index: 1;
+}
+
+.mf-info-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 8px 0; border-bottom: 1px dotted rgba(15,23,42,0.2); font-size: 0.9rem;
+}
+.mf-info-row:last-child { border-bottom: none; }
+
+.mf-info-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-gray); letter-spacing: 1.5px; font-weight: 700; }
+.mf-info-value { font-family: var(--font-cairo); font-weight: 700; color: var(--ink-dark); }
+.mf-info-value.mf-serial { font-family: var(--font-mono); color: var(--ink-red); letter-spacing: 1px; }
+
+/* أقسام */
+.mf-section { margin-bottom: 30px; position: relative; z-index: 1; }
+
+.mf-section-title {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-dark);
+    margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--cyan);
+}
+
+.mf-section-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; background: var(--ink-dark); color: var(--paper-1);
+    border-radius: 50%; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 900;
+}
+
+.mf-section-title > span:nth-child(2) { flex: 1; }
+
+.mf-section-en {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--cyan);
+    letter-spacing: 3px; font-weight: 700; opacity: 0.8;
+}
+
+/* النتائج */
+.mf-findings { display: flex; flex-direction: column; gap: 10px; }
+
+.mf-finding {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 15px; background: rgba(255,255,255,0.5);
+    border-radius: 6px; border-right: 3px solid var(--cyan);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: all 0.3s;
+}
+
+.mf-finding:hover { transform: translateX(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+.mf-finding.warning { border-right-color: #fbbf24; }
+.mf-finding.critical { border-right-color: #dc2626; background: rgba(220,38,38,0.03); }
+.mf-finding.elevated { border-right-color: #10b981; }
+.mf-finding.overflow { border-right-color: #8b5cf6; }
+
+.mf-finding-icon {
+    font-size: 1.3rem; flex-shrink: 0; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,217,225,0.1); border-radius: 50%;
+}
+
+.mf-finding-content { flex: 1; min-width: 0; }
+.mf-finding-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--ink-gray); letter-spacing: 1.5px; font-weight: 700; margin-bottom: 3px; }
+.mf-finding-value { font-family: var(--font-body); font-size: 0.92rem; color: var(--ink-dark); line-height: 1.5; }
+
+/* الوصفة */
+.mf-prescription {
+    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(240,235,210,0.4) 100%);
+    border: 1px solid rgba(15,23,42,0.15); border-radius: 8px;
+    padding: 20px 25px; position: relative;
+}
+
+.mf-prescription::before {
+    content: "℞"; position: absolute; top: 10px; right: 20px;
+    font-size: 3rem; font-family: Georgia, serif;
+    color: rgba(30,58,138,0.15); font-weight: 700; line-height: 1;
+}
+
+.mf-prescription-item {
+    display: flex; align-items: center; gap: 15px;
+    padding: 12px 0; border-bottom: 1px dashed rgba(15,23,42,0.2);
+}
+.mf-prescription-item:last-child { border-bottom: none; }
+
+.mf-prescription-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.mf-prescription-content {
+    flex: 1; display: flex; justify-content: space-between; align-items: baseline;
+    gap: 15px; flex-wrap: wrap;
+}
+
+.mf-prescription-med { font-family: var(--font-serif); font-size: 1.05rem; color: var(--ink-dark); font-weight: 700; }
+
+.mf-prescription-dose {
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-gray);
+    letter-spacing: 0.5px; padding: 3px 10px;
+    background: rgba(0,217,225,0.08); border-radius: 12px;
+    border: 1px solid rgba(0,217,225,0.2);
+}
+
+/* التشخيص */
+.mf-diagnosis {
+    text-align: center; padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.05) 0%, rgba(0,217,225,0.05) 100%);
+    border: 2px double var(--ink-dark); border-radius: 8px; position: relative;
+}
+
+.mf-diagnosis-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+.mf-diagnosis-text { font-family: var(--font-serif); font-size: 1.3rem; color: var(--ink-dark); font-weight: 700; line-height: 1.6; }
+.mf-diagnosis-note { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-gray); margin-top: 10px; letter-spacing: 1px; }
+
+/* ملاحظات */
+.mf-note {
+    padding: 20px 25px; background: rgba(255,255,255,0.5);
+    border: 1px dashed rgba(15,23,42,0.3); border-radius: 6px;
+    font-family: var(--font-body); font-size: 0.98rem; color: var(--ink-dark);
+    line-height: 1.9; text-align: justify; position: relative;
+}
+
+.mf-note::before {
+    content: "\201C"; position: absolute; top: 5px; right: 15px;
+    font-size: 3rem; color: rgba(30,58,138,0.15); font-family: Georgia, serif; line-height: 1;
+}
+.mf-note::after {
+    content: "\201D"; position: absolute; bottom: -10px; left: 15px;
+    font-size: 3rem; color: rgba(30,58,138,0.15); font-family: Georgia, serif; line-height: 1;
+}
+
+/* التذييل */
+.mf-page-footer {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px;
+    align-items: center; margin-top: 30px; padding-top: 25px;
+    border-top: 2px solid var(--ink-dark);
+    position: relative; z-index: 1;
+}
+
+.mf-signature { text-align: center; }
+.mf-signature-svg { height: 60px; position: relative; margin-bottom: 5px; }
+.mf-signature-svg svg { width: 100%; height: 100%; }
+.mf-signature-svg svg path {
+    stroke: var(--ink-blue); stroke-width: 2; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 500; stroke-dashoffset: 500;
+    animation: signWrite 2s ease-out 1.5s forwards;
+}
+
+@keyframes signWrite { to { stroke-dashoffset: 0; } }
+
+.mf-signature-name { font-family: var(--font-serif); font-size: 0.9rem; color: var(--ink-dark); font-weight: 700; }
+.mf-signature-label { font-family: var(--font-mono); font-size: 0.55rem; color: var(--ink-gray); letter-spacing: 1.5px; margin-top: 3px; }
+
+.mf-footer-center { text-align: center; }
+
+.mf-qr {
+    width: 60px; height: 60px; margin: 0 auto 5px;
+    background:
+        repeating-conic-gradient(var(--ink-dark) 0deg 90deg, transparent 90deg 180deg) 0 0 / 8px 8px,
+        repeating-linear-gradient(0deg, var(--ink-dark) 0px, var(--ink-dark) 4px, transparent 4px, transparent 8px);
+    border: 2px solid var(--ink-dark); border-radius: 3px; opacity: 0.6;
+}
+
+.mf-footer-code { font-family: var(--font-mono); font-size: 0.6rem; color: var(--ink-dark); letter-spacing: 1.5px; font-weight: 700; }
+
+.mf-official-stamp { display: flex; align-items: center; justify-content: center; }
+
+.mf-stamp-inner {
+    width: 110px; height: 110px; border-radius: 50%;
+    border: 3px solid var(--ink-blue);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--ink-blue); font-family: var(--font-mono); font-weight: 900;
+    position: relative; transform: rotate(-12deg); opacity: 0.7;
+    background: rgba(30,58,138,0.03);
+    box-shadow: inset 0 0 20px rgba(30,58,138,0.1);
+}
+
+.mf-stamp-inner::before {
+    content: ""; position: absolute; inset: 5px;
+    border: 1.5px dashed var(--ink-blue); border-radius: 50%; opacity: 0.5;
+}
+
+.mf-stamp-top { font-size: 0.55rem; letter-spacing: 2px; }
+.mf-stamp-symbol { font-size: 1.8rem; line-height: 1; margin: 2px 0; }
+.mf-stamp-bottom { font-size: 0.5rem; text-align: center; line-height: 1.3; letter-spacing: 1px; }
+
+/* الأزرار */
+.mf-actions {
+    display: none; justify-content: center; gap: 12px;
+    margin-top: 30px; flex-wrap: wrap;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mf-folder.open .mf-actions {
+    display: flex; opacity: 1; transform: translateY(0); transition-delay: 1s;
+}
+
+.mf-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: 30px; border: 2px solid;
+    font-family: var(--font-cairo); font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all 0.3s;
+    background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+}
+
+.mf-btn-download { color: var(--cyan); border-color: var(--cyan); }
+.mf-btn-download:hover { background: var(--cyan); color: var(--leather-3); box-shadow: 0 0 25px var(--cyan-glow); }
+
+.mf-btn-share { color: var(--gold-light); border-color: var(--gold-light); }
+.mf-btn-share:hover { background: var(--gold-light); color: var(--leather-3); box-shadow: 0 0 25px rgba(251,191,36,0.5); }
+
+.mf-btn-close { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); }
+.mf-btn-close:hover { color: #fff; border-color: #fff; background: rgba(255,255,255,0.1); }
+
+/* الجوال */
+@media (max-width: 640px) {
+    .mf-body { padding: 20px 10px; }
+    .mf-folder { min-height: auto; }
+    .mf-cover-title { font-size: 2.2rem; letter-spacing: 4px; }
+    .mf-cover-dept { font-size: 0.6rem; letter-spacing: 3px; }
+    .mf-cover-sub { font-size: 0.6rem; letter-spacing: 2px; }
+    .mf-stamp-top-secret { font-size: 0.7rem; padding: 6px 14px; top: 20px; left: 20px; }
+    .mf-cover-seal { width: 70px; height: 70px; font-size: 2rem; bottom: 40px; right: 20px; }
+    .mf-paper { padding: 25px 20px; margin: 10px; }
+    .mf-page-header { flex-direction: column; gap: 15px; text-align: center; }
+    .mf-hospital { flex-direction: column; text-align: center; }
+    .mf-section-title { font-size: 1rem; }
+    .mf-section-en { display: none; }
+    .mf-page-footer { grid-template-columns: 1fr; gap: 25px; text-align: center; }
+    .mf-qr { margin: 0 auto 5px; }
+    .mf-actions { flex-direction: column; align-items: stretch; }
+    .mf-btn { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================================
+   Memory File - Compact Mobile-First
+   ========================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --leather-1: #1a1410;
+    --leather-2: #2a1f18;
+    --leather-3: #0f0a07;
+    --paper-1: #faf5e6;
+    --paper-2: #f2ead2;
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-red: #991b1b;
+    --gold: #d4af37;
+    --gold-light: #fbbf24;
+    --cyan: #00d9e1;
+    --font-cairo: 'Cairo', sans-serif;
+    --font-serif: 'Aref Ruqaa', 'Amiri', serif;
+    --font-mono: 'Courier New', monospace;
+}
+
+.mf-body {
+    min-height: 100vh;
+    background: #0a0805;
+    overflow-x: hidden;
+    font-family: var(--font-cairo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    color: var(--ink);
+}
+
+/* ===== خلفية ===== */
+.mf-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+.mf-scene::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 35%, #2a1f18 0%, #0f0a07 75%);
+}
+
+.mf-lamp {
+    position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,220,150,0.18) 0%, transparent 60%);
+    animation: lampFlicker 5s ease-in-out infinite;
+}
+@keyframes lampFlicker { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+
+.mf-dust {
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,220,150,0.5), transparent),
+        radial-gradient(1px 1px at 60% 60%, rgba(255,220,150,0.4), transparent),
+        radial-gradient(2px 2px at 80% 20%, rgba(255,220,150,0.6), transparent),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,220,150,0.3), transparent);
+    animation: dustFloat 8s ease-in-out infinite alternate;
+}
+@keyframes dustFloat { from { transform: translateY(0); } to { transform: translateY(-30px); } }
+
+/* ===== المجلد ===== */
+.mf-folder {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    z-index: 2;
+    perspective: 2000px;
+}
+
+/* ===== الغلاف ===== */
+/* ===== البطاقة — دائماً relative (تحدد ارتفاع المجلد) ===== */
+.mf-card {
+    position: relative;
+    background: linear-gradient(180deg, var(--paper-1) 0%, var(--paper-2) 100%);
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;         /* ← يضمن ارتفاع كافٍ للغلاف في الوضع المغلق */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease 0.4s, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s;
+    box-shadow: inset 0 0 40px rgba(212,175,55,0.06), 0 15px 35px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.mf-folder.open .mf-card {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.mf-cover-dept {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    text-shadow: 0 0 12px rgba(212,175,55,0.6);
+    position: relative; z-index: 2;
+}
+
+.mf-cover-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 25px rgba(251,191,36,0.7), 0 3px 6px rgba(0,0,0,0.8);
+    animation: goldShine 4s ease-in-out infinite;
+    position: relative; z-index: 2;
+}
+@keyframes goldShine {
+    0%,100% { text-shadow: 0 0 25px rgba(251,191,36,0.7), 0 3px 6px rgba(0,0,0,0.8); }
+    50% { text-shadow: 0 0 45px rgba(251,191,36,1), 0 3px 6px rgba(0,0,0,0.8); }
+}
+
+.mf-stamp {
+    display: inline-block;
+    padding: 4px 14px;
+    color: var(--ink-red);
+    border: 2.5px solid var(--ink-red);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    transform: rotate(-12deg);
+    opacity: 0.85;
+    border-radius: 3px;
+    box-shadow: inset 0 0 10px rgba(153,27,27,0.2);
+    position: relative; z-index: 2;
+}
+
+.mf-seal {
+    position: absolute;
+    bottom: 55px; right: 20px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #dc2626 0%, #991b1b 60%, #7f1d1d 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    color: var(--gold-light);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6), 0 0 25px rgba(153,27,27,0.4);
+    transform: rotate(-8deg);
+    z-index: 2;
+}
+.mf-seal::before {
+    content: ""; position: absolute; inset: 6px;
+    border: 1.5px dashed rgba(251,191,36,0.4);
+    border-radius: 50%;
+}
+
+.mf-cover-hint {
+    position: absolute;
+    bottom: 18px; left: 50%; transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: rgba(251,191,36,0.8);
+    letter-spacing: 1px;
+    animation: hintPulse 2s ease-in-out infinite;
+    white-space: nowrap;
+    z-index: 2;
+}
+@keyframes hintPulse {
+    0%,100% { opacity: 0.5; transform: translateX(-50%) scale(0.98); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.02); }
+}
+
+/* ===== البطاقة ===== */
+.mf-card {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--paper-1) 0%, var(--paper-2) 100%);
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    transition: opacity 0.6s ease 0.5s, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+    box-shadow: inset 0 0 40px rgba(212,175,55,0.06), 0 15px 35px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.mf-folder.open .mf-card {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    position: relative;
+}
+
+.mf-card::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(139,90,43,0.06) 0%, transparent 25%),
+        radial-gradient(circle at 85% 90%, rgba(139,90,43,0.05) 0%, transparent 30%);
+    pointer-events: none;
+}
+
+/* رأس البطاقة */
+.mf-card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--ink);
+    position: relative; z-index: 1;
+}
+
+.mf-card-logo {
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+
+.mf-card-head-text {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--ink);
+    flex: 1;
+}
+
+/* اسم المريض */
+.mf-patient {
+    padding: 12px 0 8px;
+    border-bottom: 1px dashed rgba(15,23,42,0.3);
+    position: relative; z-index: 1;
+}
+
+.mf-patient-name {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.mf-patient-id {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-red);
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+/* بلوكات */
+.mf-block {
+    margin-top: 12px;
+    position: relative; z-index: 1;
+}
+
+.mf-block-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid var(--cyan);
+}
+
+.mf-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px; height: 18px;
+    background: var(--ink);
+    color: var(--paper-1);
+    border-radius: 50%;
+    font-size: 0.5rem;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+/* النتائج */
+.mf-findings {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.mf-finding {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 5px;
+    border-right: 3px solid var(--cyan);
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+.mf-finding.critical { border-right-color: #dc2626; }
+.mf-finding.warning { border-right-color: #fbbf24; }
+.mf-finding.elevated { border-right-color: #10b981; }
+.mf-finding.overflow { border-right-color: #8b5cf6; }
+
+.mf-finding-icon {
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    line-height: 1.2;
+}
+
+.mf-finding-text {
+    flex: 1;
+    color: var(--ink);
+}
+
+.mf-finding-text strong {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 1px;
+}
+
+/* الوصفة */
+.mf-rx {
+    background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(240,235,210,0.4) 100%);
+    border: 1px solid rgba(15,23,42,0.15);
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: relative;
+}
+
+.mf-rx::before {
+    content: "℞";
+    position: absolute;
+    top: 2px; right: 10px;
+    font-size: 1.6rem;
+    font-family: Georgia, serif;
+    color: rgba(30,58,138,0.15);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.mf-rx-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px dotted rgba(15,23,42,0.2);
+    font-size: 0.72rem;
+}
+.mf-rx-item:last-child { border-bottom: none; }
+
+.mf-rx-med {
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--ink);
+    flex: 1;
+}
+
+.mf-rx-dose {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    background: rgba(0,217,225,0.08);
+    border-radius: 10px;
+    border: 1px solid rgba(0,217,225,0.2);
+    white-space: nowrap;
+}
+
+/* التشخيص */
+.mf-diagnosis {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,217,225,0.06) 100%);
+    border: 2px double var(--ink);
+    border-radius: 6px;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.5;
+    position: relative; z-index: 1;
+}
+
+/* تذييل */
+.mf-card-foot {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1.5px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    position: relative; z-index: 1;
+}
+
+.mf-doctor {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.mf-seal-small {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    color: var(--ink);
+    transform: rotate(-10deg);
+    opacity: 0.7;
+    background: rgba(30,58,138,0.04);
+}
+
+.mf-date {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.5px;
+}
+
+/* أزرار */
+.mf-actions {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s ease 0.8s, transform 0.5s ease 0.8s;
+}
+
+.mf-folder.open .mf-actions {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 16px;
+    border-radius: 25px;
+    border: 1.5px solid;
+    font-family: var(--font-cairo);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+}
+
+.mf-btn-dl { color: var(--cyan); border-color: var(--cyan); }
+.mf-btn-dl:hover { background: var(--cyan); color: var(--leather-3); box-shadow: 0 0 20px rgba(0,217,225,0.6); }
+
+.mf-btn-sh { color: var(--gold-light); border-color: var(--gold-light); }
+.mf-btn-sh:hover { background: var(--gold-light); color: var(--leather-3); box-shadow: 0 0 20px rgba(251,191,36,0.5); }
+
+.mf-btn-cl { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); padding: 9px 12px; }
+.mf-btn-cl:hover { color: #fff; border-color: #fff; background: rgba(255,255,255,0.1); }
+
+/* ===== Desktop (أكبر قليلاً) ===== */
+@media (min-width: 640px) {
+    .mf-folder { max-width: 460px; }
+    .mf-cover-title { font-size: 2.6rem; }
+    .mf-card { padding: 20px 24px; }
+    .mf-patient-name { font-size: 1.5rem; }
+    .mf-finding { font-size: 0.78rem; padding: 8px 12px; }
+    .mf-rx-item { font-size: 0.78rem; }
+    .mf-rx-med { font-size: 0.9rem; }
+    .mf-diagnosis { font-size: 1.05rem; }
+}
+
+/* ===== شاشات صغيرة جداً ===== */
+@media (max-width: 360px) {
+    .mf-cover-title { font-size: 1.8rem; }
+    .mf-card { padding: 12px 14px; }
+    .mf-patient-name { font-size: 1.1rem; }
+    .mf-finding { font-size: 0.68rem; }
+    .mf-rx-item { font-size: 0.68rem; }
+    .mf-diagnosis { font-size: 0.85rem; }
+}
+
+/* ===== منع الحركة لمن يفضّل ذلك ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,434 @@
+/* =========================================================
+   Digital Yearbook - Mobile First
+   ========================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg-dark: #050810;
+    --bg-mid: #0a1428;
+    --cyan: #00d9e1;
+    --cyan-glow: rgba(0, 217, 225, 0.6);
+    --gold: #fbbf24;
+    --gold-glow: rgba(251, 191, 36, 0.6);
+    --green: #10b981;
+    --text: #e0f9fa;
+    --text-dim: #7dd3fc;
+}
+
+html, body { height: 100%; }
+
+.yb-body {
+    background: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+/* ===== الخلفية ===== */
+.yb-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 50% 15%, rgba(0, 217, 225, 0.15) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #050810 0%, #0a1428 100%);
+}
+
+.yb-stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(0, 217, 225, 0.7), transparent),
+        radial-gradient(1px 1px at 30% 40%, rgba(0, 217, 225, 0.5), transparent),
+        radial-gradient(2px 2px at 60% 25%, rgba(251, 191, 36, 0.6), transparent),
+        radial-gradient(1px 1px at 80% 60%, rgba(0, 217, 225, 0.5), transparent),
+        radial-gradient(1.5px 1.5px at 45% 75%, rgba(251, 191, 36, 0.4), transparent),
+        radial-gradient(1px 1px at 90% 30%, rgba(0, 217, 225, 0.6), transparent),
+        radial-gradient(1px 1px at 20% 85%, rgba(0, 217, 225, 0.4), transparent);
+    animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+/* ===== زر العودة ===== */
+.yb-back {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 217, 225, 0.1);
+    border: 1.5px solid rgba(0, 217, 225, 0.5);
+    color: var(--cyan);
+    font-size: 1.2rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 100;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.yb-back:hover, .yb-back:active {
+    background: var(--cyan);
+    color: var(--bg-dark);
+    transform: scale(1.1);
+}
+
+/* ===== الحاوية ===== */
+.yb-container {
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    padding: 8px 12px;
+}
+
+/* ===== الترويسة ===== */
+.yb-header {
+    text-align: center;
+    padding: 8px 0 12px;
+    flex-shrink: 0;
+}
+
+.yb-icon {
+    font-size: 1.6rem;
+    margin-bottom: 2px;
+    display: inline-block;
+    filter: drop-shadow(0 0 15px var(--gold));
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-4px) rotate(5deg); }
+}
+
+.yb-header h1 {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold-glow);
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+
+.yb-header p {
+    font-family: 'Courier New', monospace;
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+/* ===== المستخدم ===== */
+.yb-user {
+    text-align: center;
+    padding: 8px 0 14px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(0, 217, 225, 0.2);
+    position: relative;
+}
+
+.yb-photo-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 8px;
+}
+
+.yb-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--cyan);
+    box-shadow:
+        0 0 20px var(--cyan-glow),
+        0 0 40px rgba(0, 217, 225, 0.3),
+        inset 0 0 15px rgba(0, 217, 225, 0.2);
+    position: relative;
+    z-index: 2;
+    background: var(--bg-mid);
+}
+
+.yb-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.yb-glow {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 217, 225, 0.35) 0%, transparent 70%);
+    animation: glowPulse 2s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 1; }
+}
+
+.yb-crown {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 10px var(--gold));
+    animation: crownBounce 1.5s ease-in-out infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@keyframes crownBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0) rotate(-8deg); }
+    50% { transform: translateX(-50%) translateY(-4px) rotate(8deg); }
+}
+
+.yb-user-name {
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.1rem;
+    color: var(--cyan);
+    text-shadow: 0 0 15px var(--cyan-glow);
+    margin-bottom: 3px;
+    line-height: 1.2;
+}
+
+.yb-user-line {
+    font-size: 0.72rem;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* ===== التعليقات ===== */
+.yb-comments {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+    margin-top: 8px;
+    /* قناع تلاشي أعلى/أسفل */
+    -webkit-mask-image: linear-gradient(180deg,
+        transparent 0%,
+        #000 8%,
+        #000 92%,
+        transparent 100%);
+    mask-image: linear-gradient(180deg,
+        transparent 0%,
+        #000 8%,
+        #000 92%,
+        transparent 100%);
+}
+
+/* التعليق */
+.sign-comment {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 11px;
+    background: rgba(10, 20, 40, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px 18px 18px 4px;
+    border: 1px solid rgba(0, 217, 225, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    animation-name: commentFloat;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
+    max-width: 88%;
+}
+
+.sign-comment.gold {
+    border-color: rgba(251, 191, 36, 0.45);
+    background: rgba(35, 25, 5, 0.82);
+}
+
+.sign-comment.green {
+    border-color: rgba(16, 185, 129, 0.45);
+    background: rgba(5, 25, 15, 0.82);
+}
+
+.sign-comment.developer {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(120, 80, 0, 0.9) 0%, rgba(80, 50, 0, 0.85) 100%);
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.sign-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), #0891b2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 900;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(0, 217, 225, 0.5);
+    font-family: 'Cairo', sans-serif;
+}
+
+.sign-comment.gold .sign-avatar {
+    background: linear-gradient(135deg, var(--gold), #d97706);
+    box-shadow: 0 0 8px var(--gold-glow);
+}
+
+.sign-comment.green .sign-avatar {
+    background: linear-gradient(135deg, var(--green), #047857);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.sign-comment.developer .sign-avatar {
+    background: linear-gradient(135deg, #fbbf24, #d4af37);
+    color: #1a1410;
+}
+
+.sign-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.sign-name {
+    display: block;
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 0.72rem;
+    color: var(--cyan);
+    margin-bottom: 1px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.sign-comment.gold .sign-name { color: var(--gold); }
+.sign-comment.green .sign-name { color: #34d399; }
+.sign-comment.developer .sign-name { color: #fef3c7; }
+
+.sign-message {
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.76rem;
+    color: var(--text);
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* الحركة */
+@keyframes commentFloat {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    8% {
+        opacity: 1;
+    }
+    88% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(-45vh - 100%));
+        opacity: 0;
+    }
+}
+
+/* ===== التذييل ===== */
+.yb-footer {
+    flex-shrink: 0;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    border-top: 1px solid rgba(0, 217, 225, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.yb-fire {
+    font-size: 0.9rem;
+    animation: firePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes firePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.yb-counter {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--cyan);
+    color: var(--bg-dark);
+    border-radius: 10px;
+    font-weight: 900;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    min-width: 30px;
+}
+
+.yb-counter.pop {
+    animation: counterPop 0.35s ease-out;
+}
+
+@keyframes counterPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+/* ===== الشاشات الصغيرة ===== */
+@media (max-height: 640px) {
+    .yb-icon { font-size: 1.3rem; }
+    .yb-header h1 { font-size: 1.1rem; }
+    .yb-photo-ring { width: 75px; height: 75px; }
+    .yb-user-name { font-size: 0.95rem; }
+    .yb-user { padding: 4px 0 10px; }
+    .sign-comment { padding: 6px 9px; }
+    .sign-message { font-size: 0.72rem; }
+    .sign-name { font-size: 0.68rem; }
+}
+
+@media (max-width: 360px) {
+    .yb-container { padding: 6px 8px; }
+    .yb-header h1 { font-size: 1rem; }
+    .yb-photo-ring { width: 80px; height: 80px; }
+    .sign-avatar { width: 26px; height: 26px; font-size: 0.7rem; }
+    .sign-message { font-size: 0.7rem; }
+}
+
+/* منع الحركة لمن يفضّل ذلك */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

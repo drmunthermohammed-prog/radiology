@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>جدار الأشعة | تقنيات الأشعة 2027</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/xray-wall.css">
+</head>
+<body class="xw-body" data-dept="radiology">
+
+    <div class="xw-bg"></div>
+    <div class="xw-noise"></div>
+
+    <a href="index.html" class="xw-back" title="الرئيسية">←</a>
+
+    <header class="xw-header">
+        <span class="xw-header-icon">☢</span>
+        <span class="xw-header-title">RADIOLOGY · 2027</span>
+        <span class="xw-header-sep">·</span>
+        <span class="xw-header-sub">جدار الذكريات</span>
+    </header>
+
+    <main class="xw-wall" id="xwWall"></main>
+
+    <div class="xw-narrative-wrap">
+        <div class="xw-narrative" id="xwNarrative"></div>
+    </div>
+
+    <!-- زر البدء -->
+    <div class="xw-start-wrap" id="xwStartWrap">
+        <button class="xw-start-btn" id="xwStartBtn">
+            <span class="xw-start-icon">💡</span>
+            <span class="xw-start-text">ابدأ التجربة</span>
+            <span class="xw-start-hint">شاهد جدار الأشعة</span>
+        </button>
+    </div>
+
+    <!-- أزرار النهاية -->
+    <div class="xw-end-actions" id="xwEndActions">
+        <button class="xw-action" id="xwChangeNameBtn">🔄 تغيير الاسم</button>
+        <button class="xw-action" id="xwReplayBtn">🔄 إعادة</button>
+        <a href="index.html" class="xw-action">🏠 الرئيسية</a>
+    </div>
+
+    <div class="xw-counter" id="xwCounter">0 / 12</div>
+
+    <!-- 🆕 شاشة اختيار الاسم -->
+    <div class="xw-name-picker" id="xwNamePicker">
+        <div class="xw-name-picker-inner">
+            <div class="xw-name-picker-icon">☢</div>
+            <div class="xw-name-picker-title">جدار الأشعة</div>
+            <div class="xw-name-picker-sub">اختر اسمك لبدء التجربة</div>
+            <div class="xw-name-grid" id="xwNameGrid"></div>
+        </div>
+    </div>
+
+    <script src="data/students.js"></script>
+    <script src="data/friendships.js"></script>
+    <script src="js/xray-wall.js"></script>
+</body>
+</html>
